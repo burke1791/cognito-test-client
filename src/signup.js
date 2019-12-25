@@ -16,6 +16,8 @@ import {
 
 import 'antd/dist/antd.css';
 
+import { Auth } from 'aws-amplify';
+
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
@@ -29,7 +31,17 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log(values);
+        Auth.signUp({
+          username: values.email,
+          password: values.password
+        }).then(response => {
+          console.log(response);
+          alert('Registration successful');
+        }).catch(error => {
+          console.log(error);
+          alert(error.message);
+        });
       }
     });
   };
